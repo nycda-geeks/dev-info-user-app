@@ -44,4 +44,22 @@ for (i = 0; i < users.length; i++){
 })
 })
 
-var server = app.listen(3000);
+app.get('/submit-user', function (request, response) {
+  response.render("submit", {
+  });
+});
+
+
+app.post('/submit-user', function (request, response) {
+  var newuser = request.body
+  var userList = fs.readFileSync('./users.json')
+  var users = JSON.parse (userList)
+    users.push (newuser)
+  var userJSON = JSON.stringify (users)
+    fs.writeFileSync ('./users.json', userJSON)
+      response.redirect ('/')
+ });
+
+var server = app.listen(3000, function(){
+ console.log('userInfoApp listening on port: ' + server.address().port);
+});
